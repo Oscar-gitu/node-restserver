@@ -1,50 +1,27 @@
 const express = require('express')
 const app = express()
+const mongoose = require('mongoose');
+
 const bodyParser = require('body-parser')
 require('./config/config')
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
- 
+
 // parse application/json
 app.use(bodyParser.json())
- 
-app.get('/usuario', function (req, res) {
-  res.json('get usuario')
-})
 
-app.post('/usuario', function (req, res) {
+app.use(require('./routes/usuario'))
 
-    let persona = req.body
 
-    if( persona.nombre === undefined){
-        res.status(400).json({
-            ok: false,
-            mensaje: 'El nombre es necesario'
-        });
-    } else {
-        res.json({
-            persona
-        })
+mongoose.connect(process.env.URLDB, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }, (err, resp) => {
+    if (err) {
+        throw new Error('Error en conexion de base de datos');
     }
+    console.log('Conenctado a mongodb')
+});
 
 
-})
-
-app.put('/usuario/:id', function (req, res) {
-
-    let id = req.params.id;
-
-    res.json({
-        id
-    })
-})
-
-app.delete('/usuario', function (req, res) {
-    res.json('delete usuario')
-})
-
- 
 app.listen(process.env.PORT, () => {
     console.log('escuchando en el puerto ' + process.env.PORT)
 })
