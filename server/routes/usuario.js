@@ -5,7 +5,7 @@ const bcrypt = require('bcrypt')
 const _ = require('underscore')
 const {verificaToken, verificaAdmin_role} = require('../middlewares/autenticacion')
 
-app.get('/usuario', verificaToken ,(req, res) => {
+app.get('/usuario' ,(req, res) => {
 
     // return res.json({
     //     usuario: req.usuario
